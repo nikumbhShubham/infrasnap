@@ -1,6 +1,57 @@
-import React from 'react'
+import React,{useState} from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
+
+    const [formData, setFormData] = useState({})
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value })
+    }
+    console.log(formData)
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(false);
+    
+        try {
+            const res = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+    
+            // Ensure status check
+            if (!res.ok) {
+                throw new Error('Failed to register user');
+            }
+    
+            const data = await res.json(); // Parse JSON response
+            console.log(data); // Debugging: Check the response object
+    
+            // Navigate user if registration is successful
+            setLoading(false);
+    
+            if (res.status === 200 && data.message === "User registered successfully") {
+                navigate('/'); // Redirect to homepage
+            } else {
+                setError(true); // Show error state
+            }
+    
+        } catch (error) {
+            console.error('Error during signup:', error);
+            setError(true); // Display error state
+            setLoading(false);
+        }
+    };
+    
+
     return (
         <section className=' font-montserrat'>
             <div className='flex flex-col lg:flex-row items-center justify-center p-4 min-h-screen bg-blue-50' >
@@ -8,7 +59,7 @@ const SignUp = () => {
                     className='w-full max-w-md lg:max-w-lg bg-white rounded-lg shadow-lg p-8'
                 >
                     <h2 className='text-xl font-bold text-gray-800 mb-4 font-montserrat' >Begin Your Journey</h2>
-                    <form>
+                    <form onSubmit={handleSubmit} >
                         <div className='flex flex-col lg:flex-row justify-around items-center'>
 
 
@@ -18,7 +69,7 @@ const SignUp = () => {
                                 >
                                     First Name
                                 </label>
-                                <input type="text" id='first-name' name='firstname' placeholder='Input first name' className='mt-1 block w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm' />
+                                <input type="text" id='firstname' name='firstname' placeholder='Input first name' className='mt-1 block w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm' onChange={handleChange} />
                             </div>
                             <div className='mb-4'>
                                 <label htmlFor="Last-name"
@@ -26,7 +77,7 @@ const SignUp = () => {
                                 >
                                     Last Name
                                 </label>
-                                <input type="text" id='last-name' name='lastname' placeholder='Input first name' className='mt-1 block w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm' />
+                                <input type="text" id='lastname' name='lastname' placeholder='Input first name' className='mt-1 block w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm' onChange={handleChange} />
                             </div>
                         </div>
                         <div className="mb-4">
@@ -38,10 +89,11 @@ const SignUp = () => {
                             </label>
                             <input
                                 type="email"
+                                name='email'
                                 id="email"
                                 placeholder="example.email@gmail.com"
                                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                            />
+                                onChange={handleChange} />
                         </div>
 
                         {/* Password */}
@@ -55,9 +107,10 @@ const SignUp = () => {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    name='password'
                                     id="password"
                                     placeholder="Enter at least 8+ characters"
-                                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" onChange={handleChange}
                                 />
                                 <span className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500">
                                     👁
@@ -78,10 +131,10 @@ const SignUp = () => {
                             </label>
                         </div>
 
-                        <button type='submit'
+                        <button disabled={loading}
                             className='w-full bg-blue-500 text-white px-4 py-2 font-montserrat font-semibold rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300'
                         >
-                            Register
+                            {loading ? 'Loading...' : 'Signup'}
                         </button>
                     </form>
                     <div className='flex items-center justify-center mt-4'>
@@ -95,9 +148,10 @@ const SignUp = () => {
 
                     <p className="text-center text-sm text-gray-600 mt-6">
                         Returning user?{" "}
-                        <a href="#" className="text-blue-600 underline">
-                            Log in here
-                        </a>
+                        <NavLink to='/signin'>
+                            <span className='text-blue-700'>Sign in</span>
+                        </NavLink>
+
                     </p>
 
                 </div>

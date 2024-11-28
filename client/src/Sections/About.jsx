@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { NavLink } from "react-router-dom";
 
 const About = () => {
     // Create refs for scroll detection
@@ -49,7 +50,9 @@ const About = () => {
                         animate={textInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                         transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
                     >
+                        <NavLink to='/signup'>
                         Get Started
+                        </NavLink>
                     </motion.button>
                 </motion.div>
 

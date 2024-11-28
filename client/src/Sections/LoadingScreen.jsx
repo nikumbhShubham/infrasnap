@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const rotatingWords = [" Engineers", " Developers", "Designers", " Infrasnap"];
+const rotatingWords = [" Engineers", " Developers", " Designers", " Infrasnap"];
 
 const useTypewriter = (words, delay = 150) => {
     const [text, setText] = useState("");
@@ -17,10 +17,7 @@ const useTypewriter = (words, delay = 150) => {
                 }, delay);
                 return () => clearTimeout(timeout);
             } else {
-                // Pause after fully typing the word
-                setTimeout(() => {
-                    setIsTyping(false);
-                }, 1000); // 1-second pause
+                setTimeout(() => setIsTyping(false), 1000); // Pause after typing the word
             }
         } else {
             if (letterIndex > 0) {
@@ -30,8 +27,7 @@ const useTypewriter = (words, delay = 150) => {
                 }, delay);
                 return () => clearTimeout(timeout);
             } else {
-                // Move to the next word
-                setWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+                setWordIndex((prevIndex) => (prevIndex + 1) % words.length); // Next word
                 setIsTyping(true);
             }
         }
@@ -47,46 +43,49 @@ const LoadingScreen = ({ onComplete }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval); // Stop the interval once progress reaches 100
-                    onComplete(); // Notify parent that loading is complete
+                const nextProgress = prev + 1;
+                if (nextProgress > 100) {
+                    clearInterval(interval);
+                    onComplete(); // Call onComplete safely when loading completes
                     return 100;
                 }
-                return prev + 1;
+                return nextProgress;
             });
-        }, 100); // 100ms * 100 steps = 10 seconds
+        }, 20); // Update progress every 100ms
 
-        return () => clearInterval(interval); // Cleanup the interval on component unmount
+        return () => clearInterval(interval); // Cleanup interval
     }, [onComplete]);
 
     return (
-        <div className="flex flex-col h-screen p-4 overflow-hidden"
-        style={{
-            backgroundImage: `url('assets/loadingBack.jpg')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-        }}>
+        <div
+            className="flex flex-col h-screen p-4 overflow-hidden"
+            style={{
+                backgroundImage: `url('assets/loadingBack.jpg')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+            }}
+        >
             {/* Centered Animated Text */}
             <div className="flex-grow flex items-center justify-center text-center">
-                <div className="bg-black-600 text-4xl md:text-6xl font-bold mb-8 p-4 text-white tracking-wide">
+                <div className="bg-black text-4xl md:text-6xl font-bold mb-8 p-4 text-white tracking-wide">
                     <span>We are {animatedText}</span>
                     <span className="text-white animate-blink">|</span>
                 </div>
             </div>
 
             {/* Loading Bar with Moving Label */}
-            <div className="flex justify-center items-center mb-4" style={{ position: 'relative', bottom: '10px', width: '100%' }}>
-                {/* Progress Bar */}
+            <div className="flex justify-center items-center mb-4" style={{ position: "relative", bottom: "10px", width: "100%" }}>
                 <div className="w-full h-1 bg-gray-300 rounded mx-auto relative">
+                    {/* Progress Bar */}
                     <div
-                        className="w-3/4 h-full bg-black rounded transition-all duration-100"
+                        className="h-full bg-black rounded transition-all duration-100"
                         style={{ width: `${progress}%` }}
                     ></div>
 
                     {/* Moving Loading Text */}
                     <p
-                        className="absolute p-2 text-gray-700 text-sm font-medium transition-all"
+                        className="absolute text-gray-700 text-sm font-medium transition-all"
                         style={{
                             left: `${progress}%`,
                             transform: "translateX(-50%)",

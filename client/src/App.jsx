@@ -1,49 +1,84 @@
-import { useState, useEffect } from 'react'
-import Navbar from "./sections/Navbar"
+import React, { useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { ThemeProvider } from "@/contexts/theme-context";
 
-import About from './Sections/About'
-import Features from './Sections/Features'
-import Footer from './Sections/Footer'
+// Common Components
+// import CustomCursor from "@/components/CustomCursor";
+// import LoadingScreen from "@/components/LoadingScreen";
 
-import VideoLoader from './Sections/VideoLoader';
-import LoadingScreen from './Sections/LoadingScreen';
 import CustomCursor from './Components/CustomCursor'
-import SignIn from './Sections/SignIn'
-import SignUp from './Sections/SignUp'
-
+import LoadingScreen from './Sections/LoadingScreen'
+// Layouts and Pages
+import Layout from "@/routes/layout";
+import DashboardPage from "@/routes/dashboard/page";
+import Settings from "@/routes/dashboard/Settings";
+import VideoLoader from "./Sections/VideoLoader";
+import SignUp from "./Sections/SignUp";
+import SignIn from "./Sections/SignIn";
+import SiteDailyReport from "./dump/SiteDailyReport";
+import RawMaterial from "./dump/RawMaterial";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-  return (
-    <main >
-      {/* <Hero onLoad={() => setIsLoading(false)} isLoading={isLoading} />
-      {isLoading ? null : (
-        <>
-          <Navbar />
-          <About/>
-          <Features/>
-          <Footer/>
-        </>
-      )} */}
-      {/* <VideoLoader/> */}
-      <CustomCursor/>
-      {/* {isLoading ? (
-        <LoadingScreen onComplete={() => setIsLoading(false)} />
-      ) : (
-        <>
-          <Navbar />
-          <VideoLoader/>
-          <About />
-          <Features />
-          <Footer />
-        </>
-      )} */}
-      <SignUp/> 
-         {/* <SignIn/> */}
-    </main>
-  )
+    const handleLoadingComplete = () => {
+        setIsLoading(false);
+    };
+
+    const router = createBrowserRouter([
+        // Landing Website Routes
+        {
+            path: "/",
+            element: <VideoLoader />,
+        },
+        {
+            path: "/signup",
+            element: <SignUp />,
+        },
+        {
+            path: "/signin",
+            element: <SignIn />,
+        }, 
+        {
+            path: "/form1",
+            element: <SiteDailyReport />,
+        },
+         {
+            path: "/form2",
+            element: <RawMaterial />,
+        },
+        // Dashboard Routes
+        {
+            path: "/dashboard",
+            element: <Layout />,
+            children: [
+                { path: "page", index: true, element: <DashboardPage /> },
+                { path: "analytics", element:<h1 className="title">Analytics</h1>  },
+                { path: "reports", element: <h1 className="title">Reports</h1> },
+                { path: "customers", element: <h1 className="title">Customers</h1> },
+                { path: "new-customer", element: <h1 className="title">New Customer</h1> },
+                { path: "verified-customers", element: <h1 className="title">Verified Customers</h1> },
+                { path: "products", element: <h1 className="title">Products</h1> },
+                { path: "new-product", element: <h1 className="title">New Product</h1> },
+                { path: "inventory", element: <h1 className="title">Inventory</h1> },
+                { path: "settings", element: <Settings/> },
+            ],
+        },
+    ]);
+
+    return (
+        <main>
+            <CustomCursor />
+            <ThemeProvider storageKey="theme">
+                {isLoading ? (
+                    <LoadingScreen onComplete={handleLoadingComplete} />
+                ) : (
+                    <RouterProvider router={router} />
+                )}
+            </ThemeProvider>
+        </main>
+    );
 }
 
-export default App
+export default App;

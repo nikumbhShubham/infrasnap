@@ -18,7 +18,7 @@ const FeatureCard = ({ title, description, icon, index }) => {
       whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
     >
       <motion.div
-        className="w-16 h-16 mb-4 text-blue-700"
+        className="w-16 h-16 mb-4 text-black"
         initial={{ scale: 0 }}
         animate={inView ? { scale: 1, rotate: 360 } : { scale: 0 }}
         transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
@@ -64,7 +64,7 @@ const RisingCircle = () => {
         }}
       >
         {/* Main gradient circle */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-blue-600/80 to-indigo-900/90 blur-3xl" />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-blue-700/80 to-indigo-900/90 blur-3xl" />
         
         {/* Animated overlay circles for dynamic effect */}
         <motion.div

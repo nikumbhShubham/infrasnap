@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isMoving, setIsMoving] = useState(false);
+  const cursorRef = useRef(null); // Use a ref to directly manipulate DOM for smoother updates
 
   useEffect(() => {
     let timer;
+    const cursor = cursorRef.current;
 
     const handleMouseMove = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      const { clientX: x, clientY: y } = e;
+
+      // Update cursor position using transform for better performance
+      if (cursor) {
+        cursor.style.transform = `translate(${x - 10}px, ${y - 10}px)`;
+      }
+
       setIsMoving(true);
 
-      // Clear any existing timer when the mouse moves
+      // Clear any existing timer
       clearTimeout(timer);
 
       // Set a timer to detect when the mouse stops
@@ -32,18 +39,17 @@ const CustomCursor = () => {
 
   return (
     <div
+      ref={cursorRef}
       style={{
         position: "fixed",
-        top: position.y,
-        left: position.x,
         width: isMoving ? "20px" : "10px", // Size changes based on movement
         height: isMoving ? "20px" : "10px",
         backgroundColor: "black",
         borderRadius: "50%",
         pointerEvents: "none", // Prevent interaction issues
-        transform: "translate(-50%, -50%)", // Center the dot on the cursor
         zIndex: 1000,
-        transition: "width 0.5s ease, height 0.5s ease, top 0.05s, left 0.05s", // Smooth size transition
+        transition: "width 0.2s ease, height 0.2s ease", // Smooth size transition
+        willChange: "transform", // Hint the browser to optimize for transform changes
       }}
     ></div>
   );
