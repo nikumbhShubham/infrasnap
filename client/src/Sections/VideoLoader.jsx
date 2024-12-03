@@ -32,7 +32,7 @@ const VideoLoader = () => {
   return (
     <div className="relative w-full h-screen font-montserrat">
       {/* Loading Screen */}
-      <Navbar/>
+      {/* <Navbar/> */}
       {isLoading && (
         <div className="absolute inset-0  flex items-center justify-center">
           <div className="text-black text-2xl">Loading...</div>

@@ -76,7 +76,7 @@ export const signin = async (request, response, next) => {
         response
             .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
             .status(200)
-            .json({ success: true, user: rest, token });
+            .json({ success: true, ...rest , token });
     } catch (error) {
         next(error);
     }

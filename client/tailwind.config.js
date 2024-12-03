@@ -8,7 +8,7 @@ export default {
                 raleway: ['Raleway', 'sans-serif'],
                 montserrat: ['Montserrat', 'sans-serif'],
                 generalsans: ['General Sans', 'sans-serif'],
-        
+                eloquia: ['Eloquia', 'sans-serif'],
               },
         },
     },

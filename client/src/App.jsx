@@ -13,11 +13,14 @@ import LoadingScreen from './Sections/LoadingScreen'
 import Layout from "@/routes/layout";
 import DashboardPage from "@/routes/dashboard/page";
 import Settings from "@/routes/dashboard/Settings";
-import VideoLoader from "./Sections/VideoLoader";
+// import VideoLoader from "./Sections/VideoLoader";
 import SignUp from "./Sections/SignUp";
 import SignIn from "./Sections/SignIn";
-import SiteDailyReport from "./dump/SiteDailyReport";
+// import SiteDailyReport from "./dump/SiteDailyReport";
+import SiteDailyReport from "./routes/dashboard/SiteDailyReport";
 import RawMaterial from "./dump/RawMaterial";
+// import HeroSection from "./Sections/Hero2";
+import HeroSection from "./Sections/HeroSection";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +33,7 @@ function App() {
         // Landing Website Routes
         {
             path: "/",
-            element: <VideoLoader />,
+            element: <HeroSection />,
         },
         {
             path: "/signup",
@@ -40,10 +43,10 @@ function App() {
             path: "/signin",
             element: <SignIn />,
         }, 
-        {
-            path: "/form1",
-            element: <SiteDailyReport />,
-        },
+        // {
+        //     path: "/form1",
+        //     element: <SiteDailyReport />,
+        // },
          {
             path: "/form2",
             element: <RawMaterial />,
@@ -54,7 +57,7 @@ function App() {
             element: <Layout />,
             children: [
                 { path: "page", index: true, element: <DashboardPage /> },
-                { path: "analytics", element:<h1 className="title">Analytics</h1>  },
+                { path: "analytics", element: <SiteDailyReport/>  },
                 { path: "reports", element: <h1 className="title">Reports</h1> },
                 { path: "customers", element: <h1 className="title">Customers</h1> },
                 { path: "new-customer", element: <h1 className="title">New Customer</h1> },

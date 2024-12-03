@@ -12,9 +12,9 @@ const router = express.Router();
 router.get('/', test);
 
 // Update user route (accessible by the user themselves or an admin)
-router.put('/update/:id', verifyToken, verifyRole(["supervisor", "admin"]), updateUser);
+router.put('/update/:id', verifyToken, verifyRole(["supervisor", "admin","client"]), updateUser);
 
 // Delete user route (accessible only by admin)
-router.delete('/delete/:id', verifyToken, verifyRole(["supervisor", "admin"]), deleteUser);
+router.delete('/delete/:id', verifyToken, verifyRole(["supervisor", "admin","client"]), deleteUser);
 
 export default router;

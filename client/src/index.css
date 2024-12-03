@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Eloquia';
+  src: url('./assets/fonts/Eloquia-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Eloquia';
+  src: url('./assets/fonts/Eloquia-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 * {
   scroll-behavior: smooth;
 }

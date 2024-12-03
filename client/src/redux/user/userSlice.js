@@ -3,34 +3,34 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     currentUser: null,
     loading: false,
-    error: null, // Changed from false to null for clarity
-};
+    error: false,
 
+}
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+
         signInStart: (state) => {
             state.loading = true;
-            state.error = null; // Clear previous errors on new action
         },
+
         signInSuccess: (state, action) => {
             state.currentUser = action.payload;
             state.loading = false;
-            state.error = null;
+            state.error = false;
         },
         signInFailure: (state, action) => {
             state.loading = false;
-            state.error = action.payload; // Assume payload contains an error message
+            state.error = action.payload;
         },
         updateUserStart: (state) => {
             state.loading = true;
-            state.error = null;
         },
         updateUserSuccess: (state, action) => {
             state.currentUser = action.payload;
             state.loading = false;
-            state.error = null;
+            state.error = false;
         },
         updateUserFailure: (state, action) => {
             state.loading = false;
@@ -38,12 +38,11 @@ const userSlice = createSlice({
         },
         deleteUserStart: (state) => {
             state.loading = true;
-            state.error = null;
         },
         deleteUserSuccess: (state) => {
             state.currentUser = null;
             state.loading = false;
-            state.error = null;
+            state.error = false;
         },
         deleteUserFailure: (state, action) => {
             state.loading = false;
@@ -52,26 +51,11 @@ const userSlice = createSlice({
         signOut: (state) => {
             state.currentUser = null;
             state.loading = false;
-            state.error = null;
-        },
-        clearError: (state) => {
-            state.error = null; // New reducer to clear errors explicitly
-        },
-    },
+            state.error = false;
+        }
+    }
 });
 
-export const { 
-    signInFailure, 
-    signInStart, 
-    signInSuccess, 
-    updateUserStart, 
-    updateUserSuccess, 
-    updateUserFailure, 
-    deleteUserStart, 
-    deleteUserSuccess, 
-    deleteUserFailure, 
-    signOut,
-    clearError,
-} = userSlice.actions;
+export const { signInFailure, signInStart, signInSuccess, updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOut } = userSlice.actions;
 
-export default userSlice.reducer;
+export default userSlice.reducer

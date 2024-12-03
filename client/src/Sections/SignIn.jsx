@@ -116,7 +116,7 @@ const SignIn = () => {
 
                     <p className="text-center text-sm text-gray-600 mt-16">
                         Returning user?{" "}
-                        <NavLink to='/sign-up'>
+                        <NavLink to='/signup'>
                             <span className='text-blue-700'>Register here</span>
                         </NavLink>
                     </p>
